@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -22,7 +23,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DefaultTextField(
+fun DefaultOutlineTextField(
     modifier: Modifier,
     value:String,
     label: String,
@@ -34,18 +35,13 @@ fun DefaultTextField(
     Box(
         modifier = modifier
             .height(55.dp)
-            .background(
-                color = Color.White,
-                shape = RoundedCornerShape(
-                    topStart = 15.dp,
-                    bottomEnd = 15.dp
-                )
 
-            ),
     ){
-        TextField(
+        OutlinedTextField(
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = { text ->
+                onValueChange(text)
+            },
             label = {
                 Text(text = label)
             },
@@ -64,13 +60,7 @@ fun DefaultTextField(
             },
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             visualTransformation =  if(hideText) PasswordVisualTransformation() else VisualTransformation.None,
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
-            )
+
         )
     }
 }
