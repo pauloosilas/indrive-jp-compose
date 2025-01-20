@@ -6,12 +6,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
+import com.sumpaulo.indriver_jetpack.domain.useCases.auth.AuthUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(): ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val authUseCase: AuthUseCase
+): ViewModel() {
 
     var state by mutableStateOf(LoginState())
     private set
@@ -27,10 +32,10 @@ class LoginViewModel @Inject constructor(): ViewModel() {
         state = state.copy(password = input)
     }
 
-    fun login(){
+    fun login() = viewModelScope.launch{
         if(isValidForm()){
-            Log.d("LoginViewModel", "${state.email}")
-            Log.d("LoginViewModel", "${state.password}")
+            val result = authUseCase.login(state.email, state.password)
+
         }
     }
 
