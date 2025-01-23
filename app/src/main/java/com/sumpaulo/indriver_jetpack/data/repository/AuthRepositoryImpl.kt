@@ -3,7 +3,9 @@ package com.sumpaulo.indriver_jetpack.data.repository
 import android.util.Log
 import com.sumpaulo.indriver_jetpack.data.dataSource.remote.service.AuthService
 import com.sumpaulo.indriver_jetpack.domain.model.AuthResponse
+import com.sumpaulo.indriver_jetpack.domain.model.ErrorResponse
 import com.sumpaulo.indriver_jetpack.domain.repository.AuthRepository
+import com.sumpaulo.indriver_jetpack.domain.util.ErrorHelper
 import com.sumpaulo.indriver_jetpack.domain.util.Resource
 
 class AuthRepositoryImpl(private val authService: AuthService) : AuthRepository {
@@ -17,7 +19,9 @@ class AuthRepositoryImpl(private val authService: AuthService) : AuthRepository 
                 Log.d("AuthRepositoryImpl", "Data: ${result.body()!!}")
                 Resource.Success(result.body()!!)
             }
-                Resource.Failure("Error na requisição...")
+                val errorResponse: ErrorResponse?  = ErrorHelper.handleError(result.errorBody())
+
+                Resource.Failure(errorResponse?.message ?: "Error na requisição...")
 
         }catch(e:Exception){
             Log.d("AuthRepositoryImpl", "Message ${e}")

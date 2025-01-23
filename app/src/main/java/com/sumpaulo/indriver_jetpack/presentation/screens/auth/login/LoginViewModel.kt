@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import com.sumpaulo.indriver_jetpack.domain.model.AuthResponse
 import com.sumpaulo.indriver_jetpack.domain.useCases.auth.AuthUseCase
+import com.sumpaulo.indriver_jetpack.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
@@ -23,6 +25,8 @@ class LoginViewModel @Inject constructor(
 
     var errorMessage by mutableStateOf("")
 
+    var loginResponse by mutableStateOf<Resource<AuthResponse>?>(null)
+    private set
 
     fun onEmailInput(input: String){
         state = state.copy(email = input)
@@ -34,7 +38,9 @@ class LoginViewModel @Inject constructor(
 
     fun login() = viewModelScope.launch{
         if(isValidForm()){
+            loginResponse = Resource.Loading
             val result = authUseCase.login(state.email, state.password)
+            loginResponse = result
 
         }
     }

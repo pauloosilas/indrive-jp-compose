@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.sumpaulo.indriver_jetpack.presentation.screens.auth.login.components.Login
 import com.sumpaulo.indriver_jetpack.presentation.screens.auth.login.components.LoginContent
 import com.sumpaulo.indriver_jetpack.ui.theme.IndriverjetpackTheme
 
@@ -19,6 +20,8 @@ fun LoginScreen(navController: NavHostController){
     ) { paddingValues ->
         LoginContent(paddingValues, navController)
     }
+
+    Login()
 }
 
 
