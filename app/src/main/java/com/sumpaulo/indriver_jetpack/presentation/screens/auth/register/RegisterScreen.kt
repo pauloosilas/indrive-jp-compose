@@ -48,6 +48,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import com.sumpaulo.indriver_jetpack.R
 import com.sumpaulo.indriver_jetpack.presentation.components.DefaultButton
 import com.sumpaulo.indriver_jetpack.presentation.components.DefaultOutlineTextField
+import com.sumpaulo.indriver_jetpack.presentation.screens.auth.register.components.Register
 import com.sumpaulo.indriver_jetpack.presentation.screens.auth.register.components.RegisterContent
 
 @Composable
@@ -57,6 +58,8 @@ fun RegisterScreen(navController: NavHostController) {
     Scaffold { paddingvalues ->
         RegisterContent(paddingvalues, navController)
         }
+
+    Register(navController = navController)
 }
 
 @Preview(showBackground = true, showSystemUi = true)

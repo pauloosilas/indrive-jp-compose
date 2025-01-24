@@ -21,7 +21,7 @@ fun LoginScreen(navController: NavHostController){
         LoginContent(paddingValues, navController)
     }
 
-    Login()
+    Login(navController = navController)
 }
 
 

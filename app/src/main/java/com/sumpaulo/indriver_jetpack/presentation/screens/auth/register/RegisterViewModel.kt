@@ -8,10 +8,16 @@ import javax.inject.Inject
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.sumpaulo.indriver_jetpack.domain.model.AuthResponse
+import com.sumpaulo.indriver_jetpack.domain.useCases.auth.AuthUseCases
+import com.sumpaulo.indriver_jetpack.domain.util.Resource
+import com.sumpaulo.indriver_jetpack.presentation.screens.auth.register.mapper.toUser
+import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(): ViewModel(){
+class RegisterViewModel @Inject constructor(private val authUseCases: AuthUseCases): ViewModel(){
 
     var state by mutableStateOf(RegisterState())
         private set
@@ -42,14 +48,19 @@ class RegisterViewModel @Inject constructor(): ViewModel(){
         state = state.copy(confirmPassword = input)
     }
 
-    fun register(){
+    var registerResponse by mutableStateOf<Resource<AuthResponse>?>(null)
+    private set
+
+    fun saveSession(authResponse: AuthResponse) = viewModelScope.launch {
+        authUseCases.saveSession(authResponse)
+    }
+
+
+    fun register() = viewModelScope.launch{
         if(isValidForm()){
-            Log.d("RegisterViewModel", state.name)
-            Log.d("RegisterViewModel", state.lastname)
-            Log.d("RegisterViewModel", state.email)
-            Log.d("RegisterViewModel", state.phone)
-            Log.d("RegisterViewModel", state.password)
-            Log.d("RegisterViewModel", state.confirmPassword)
+            registerResponse = Resource.Loading
+            val result = authUseCases.register(state.toUser())
+            registerResponse = result
         }
     }
 

@@ -1,11 +1,15 @@
 package com.sumpaulo.indriver_jetpack.di
 
 import com.sumpaulo.indriver_jetpack.core.Config
-import com.sumpaulo.indriver_jetpack.data.dataSource.remote.service.AuthService
+import com.sumpaulo.indriver_jetpack.data.local.datastore.LocalDatastore
+import com.sumpaulo.indriver_jetpack.data.remote.dataSource.remote.service.AuthService
+import com.sumpaulo.indriver_jetpack.data.remote.dataSource.remote.service.UserService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -18,7 +22,18 @@ object NetworkModule{
 
     @Provides
     @Singleton
-    fun provideOkHttpClient() = OkHttpClient.Builder().build()
+    fun provideOkHttpClient(datastore: LocalDatastore) = OkHttpClient.Builder()
+        .addInterceptor{
+            val token = runBlocking {
+                datastore.getData().first().token
+            }
+            val newRequest = it.request().newBuilder()
+                .addHeader("Authorization", token ?: "")
+                .build()
+
+            it.proceed(newRequest)
+        }
+        .build()
 
     @Provides
     @Singleton
@@ -36,4 +51,12 @@ object NetworkModule{
     fun provideAuthService(retrofit: Retrofit): AuthService {
         return retrofit.create(AuthService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideUserService(retrofit: Retrofit): UserService {
+        return retrofit.create(UserService::class.java)
+    }
+
+
 }

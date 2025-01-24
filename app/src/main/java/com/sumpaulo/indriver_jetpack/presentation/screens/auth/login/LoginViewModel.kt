@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.sumpaulo.indriver_jetpack.domain.model.AuthResponse
-import com.sumpaulo.indriver_jetpack.domain.useCases.auth.AuthUseCase
+import com.sumpaulo.indriver_jetpack.domain.useCases.auth.AuthUseCases
 import com.sumpaulo.indriver_jetpack.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,8 +17,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authUseCase: AuthUseCase
+    private val authUseCase: AuthUseCases
 ): ViewModel() {
+
+    init{
+        getSessionData()
+    }
 
     var state by mutableStateOf(LoginState())
     private set
@@ -42,6 +46,19 @@ class LoginViewModel @Inject constructor(
             val result = authUseCase.login(state.email, state.password)
             loginResponse = result
 
+        }
+    }
+
+    fun saveSession(authResponse: AuthResponse) = viewModelScope.launch {
+        authUseCase.saveSession(authResponse)
+    }
+
+    fun getSessionData() = viewModelScope.launch{
+        authUseCase.getSessionData().collect(){ data ->
+            Log.d("LoginViewModel", "Dados sessão: ${data}")
+            if(!data.token.isNullOrBlank()){
+                loginResponse = Resource.Success(data)
+            }
         }
     }
 

@@ -5,9 +5,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sumpaulo.indriver_jetpack.presentation.navigation.Graph
+import com.sumpaulo.indriver_jetpack.presentation.navigation.graph.client.ClientNavGraph
 import com.sumpaulo.indriver_jetpack.presentation.navigation.screen.auth.AuthScreen
 import com.sumpaulo.indriver_jetpack.presentation.screens.auth.login.LoginScreen
 import com.sumpaulo.indriver_jetpack.presentation.screens.auth.register.RegisterScreen
+import com.sumpaulo.indriver_jetpack.presentation.screens.client.home.ClientHomeScreen
 
 
 fun NavGraphBuilder.AuthNavGraph(navController: NavHostController){
@@ -22,5 +24,12 @@ fun NavGraphBuilder.AuthNavGraph(navController: NavHostController){
         composable(route = AuthScreen.Register.route){
             RegisterScreen(navController = navController)
         }
+
+       // ClientNavGraph(navController = navController)
+
+       composable(route = Graph.CLIENT){
+           ClientHomeScreen()
+       }
+
     }
 }
