@@ -1,9 +1,8 @@
-package com.sumpaulo.indriver_jetpack.presentation.screens.auth.profile.update.components
+package com.sumpaulo.indriver_jetpack.presentation.screens.profile.info.components
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,8 +20,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -46,20 +43,17 @@ import coil3.compose.AsyncImage
 import com.sumpaulo.indriver_jetpack.MainActivity
 import com.sumpaulo.indriver_jetpack.presentation.components.DefaultIconButton
 import com.sumpaulo.indriver_jetpack.R
-import com.sumpaulo.indriver_jetpack.presentation.components.DefaultTextField
 import com.sumpaulo.indriver_jetpack.presentation.navigation.screen.profile.ProfileScreen
-import com.sumpaulo.indriver_jetpack.presentation.screens.auth.profile.info.ProfileInfoViewModel
-import com.sumpaulo.indriver_jetpack.presentation.screens.auth.profile.update.ProfileUpdateViewModel
+import com.sumpaulo.indriver_jetpack.presentation.screens.profile.info.ProfileInfoViewModel
 
 @SuppressLint("ContextCastToActivity")
 @Composable
-fun ProfileUpdateContent(
+fun ProfileInfoContent(
     navController: NavHostController,
     paddingValues: PaddingValues,
-    viewModel: ProfileUpdateViewModel = hiltViewModel()) {
+    viewModel: ProfileInfoViewModel = hiltViewModel()) {
 
     val activity = LocalContext.current as? Activity
-    val state = viewModel.state
 
     Box(modifier = Modifier
         .padding(paddingValues)
@@ -86,18 +80,30 @@ fun ProfileUpdateContent(
             Spacer(modifier = Modifier.weight(1f))
             DefaultIconButton(
                 modifier = Modifier,
-                title = "ATULIZAR PERFIL",
+                title = "EDITAR PERFIL",
                 icon = Icons.Default.Edit,
                 onClick = {
-                    viewModel.update()
+                   if(viewModel.user != null){
+                       navController.navigate(ProfileScreen.ProfileUpdate.passUser(viewModel.user!!.toJson()))
+                   }
                 }
             )
-
+            Spacer(modifier = Modifier.height(20.dp))
+            DefaultIconButton(
+                modifier = Modifier,
+                title = "SAIR",
+                icon = Icons.Default.ExitToApp,
+                onClick = {
+                    viewModel.logout()
+                    activity?.finish()
+                    activity?.startActivity(Intent(activity, MainActivity::class.java))
+                }
+            )
         }
 
         Card(
             modifier = Modifier.fillMaxWidth()
-                .fillMaxHeight(0.8f)
+                .fillMaxHeight(0.7f)
                 .padding(horizontal = 20.dp, vertical = 100.dp),
             colors = CardDefaults.cardColors(
                 containerColor = Color.White
@@ -131,40 +137,23 @@ fun ProfileUpdateContent(
 
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-
-                DefaultTextField(
-                    modifier = Modifier,
-                    value = state.name,
-                    label = "Nome",
-                    icon = Icons.Default.Person,
-                    onValueChange = {
-                        viewModel.onNameInput(it)
-                        Log.d("TESTE", "NOME: ${it}")
-                    }
+                Text(text= "${viewModel.user?.name} ${viewModel.user?.lastname}",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
                 )
-
-                DefaultTextField(
-                    modifier = Modifier,
-                    value = state.lastname,
-                    label = "Sobrenome",
-                    icon = Icons.Default.Person,
-                    onValueChange = {
-                        viewModel.onLastnameInput(it)
-                    }
+                Text(text= viewModel.user?.email ?: "",
+                    fontSize = 16.sp,
                 )
-
-                DefaultTextField(
-                    modifier = Modifier,
-                    value = state.phone,
-                    label = "Telefone",
-                    icon = Icons.Default.Phone,
-                    onValueChange = {
-                        viewModel.onPhoneInput(it)
-                    }
+                Text(text="${viewModel.user?.phone}",
+                    fontSize = 16.sp
                 )
-
-
             }
         }
     }
+}
+
+@Composable
+@Preview(showSystemUi = true)
+fun ProfileInfoContentPreview(){
+    ProfileInfoContent(navController = rememberNavController(), paddingValues =  PaddingValues())
 }

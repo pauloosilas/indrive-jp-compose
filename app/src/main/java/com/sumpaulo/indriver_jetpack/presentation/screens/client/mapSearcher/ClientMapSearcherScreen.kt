@@ -6,7 +6,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.sumpaulo.indriver_jetpack.presentation.screens.auth.profile.info.components.ProfileInfoContent
 
 @Composable
 fun ClientMapSearcherScreen(navController: NavHostController) {

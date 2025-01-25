@@ -63,6 +63,10 @@ dependencies {
     //Async image
     implementation(libs.coil.compose)
 
+    //Files transformation
+    implementation("commons-io:commons-io:2.18.0")
+
+
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

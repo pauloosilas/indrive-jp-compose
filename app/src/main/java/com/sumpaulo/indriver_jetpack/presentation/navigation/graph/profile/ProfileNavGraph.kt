@@ -7,14 +7,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.sumpaulo.indriver_jetpack.presentation.navigation.Graph
-import com.sumpaulo.indriver_jetpack.presentation.navigation.graph.client.ClientNavGraph
-import com.sumpaulo.indriver_jetpack.presentation.navigation.screen.auth.AuthScreen
 import com.sumpaulo.indriver_jetpack.presentation.navigation.screen.profile.ProfileScreen
-import com.sumpaulo.indriver_jetpack.presentation.screens.auth.login.LoginScreen
-import com.sumpaulo.indriver_jetpack.presentation.screens.auth.profile.info.ProfileInfoScreen
-import com.sumpaulo.indriver_jetpack.presentation.screens.auth.profile.update.ProfileUpdateScreen
-import com.sumpaulo.indriver_jetpack.presentation.screens.auth.register.RegisterScreen
-import com.sumpaulo.indriver_jetpack.presentation.screens.client.home.ClientHomeScreen
+import com.sumpaulo.indriver_jetpack.presentation.screens.profile.info.ProfileInfoScreen
+import com.sumpaulo.indriver_jetpack.presentation.screens.profile.update.ProfileUpdateScreen
 
 
 fun NavGraphBuilder.ProfileNavGraph(navController: NavHostController){

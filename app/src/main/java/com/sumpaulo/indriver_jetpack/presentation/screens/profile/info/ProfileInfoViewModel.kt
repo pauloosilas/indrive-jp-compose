@@ -1,4 +1,4 @@
-package com.sumpaulo.indriver_jetpack.presentation.screens.auth.profile.info
+package com.sumpaulo.indriver_jetpack.presentation.screens.profile.info
 
 import androidx.compose.runtime.mutableStateOf
 import com.sumpaulo.indriver_jetpack.domain.model.User
@@ -10,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 
 

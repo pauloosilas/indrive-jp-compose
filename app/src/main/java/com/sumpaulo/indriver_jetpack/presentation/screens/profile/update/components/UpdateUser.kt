@@ -1,4 +1,4 @@
-package com.sumpaulo.indriver_jetpack.presentation.screens.auth.profile.update.components
+package com.sumpaulo.indriver_jetpack.presentation.screens.profile.update.components
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable
@@ -8,9 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.sumpaulo.indriver_jetpack.domain.util.Resource
 import com.sumpaulo.indriver_jetpack.presentation.components.ProgressBar
-import com.sumpaulo.indriver_jetpack.presentation.navigation.Graph
-import com.sumpaulo.indriver_jetpack.presentation.screens.auth.login.LoginViewModel
-import com.sumpaulo.indriver_jetpack.presentation.screens.auth.profile.update.ProfileUpdateViewModel
+import com.sumpaulo.indriver_jetpack.presentation.screens.profile.update.ProfileUpdateViewModel
 
 @Composable
 fun UpdateUser(navController: NavHostController, viewModel: ProfileUpdateViewModel = hiltViewModel()) {
