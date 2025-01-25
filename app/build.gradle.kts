@@ -62,6 +62,8 @@ dependencies {
 
     //Async image
     implementation(libs.coil.compose)
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
+
 
     //Files transformation
     implementation("commons-io:commons-io:2.18.0")
