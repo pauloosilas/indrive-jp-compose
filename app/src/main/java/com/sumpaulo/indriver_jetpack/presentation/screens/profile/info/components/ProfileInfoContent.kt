@@ -117,25 +117,27 @@ fun ProfileInfoContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(115.dp)
-                        .clip(CircleShape)
-                ){
-                    if(!viewModel.user?.image.isNullOrBlank()){
-                        AsyncImage(
-                            model = viewModel.user?.image,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop
-                        )
-                    }else{
-                        Image(
-                            painter = painterResource(id = R.drawable.user_image),
-                            contentDescription = null
-                        )
-                    }
 
+                if(!viewModel.user?.image.isNullOrBlank()){
+                    AsyncImage(
+                        modifier = Modifier
+                            .size(120.dp)
+                            .align(Alignment.CenterHorizontally),
+                        model = viewModel.user?.image,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop
+                    )
+                }else{
+                    Image(
+                        modifier = Modifier
+                            .size(120.dp)
+                            .align(Alignment.CenterHorizontally),
+                        painter = painterResource(id = R.drawable.user_image),
+                        contentDescription = null
+                    )
                 }
+
+
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(text= "${viewModel.user?.name} ${viewModel.user?.lastname}",
                     fontSize = 18.sp,

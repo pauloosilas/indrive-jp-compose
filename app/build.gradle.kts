@@ -66,6 +66,8 @@ dependencies {
     //Files transformation
     implementation("commons-io:commons-io:2.18.0")
 
+    //extensões para okHttp
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.core.ktx)

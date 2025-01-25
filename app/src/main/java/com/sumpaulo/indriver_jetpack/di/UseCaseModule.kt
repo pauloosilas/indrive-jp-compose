@@ -8,6 +8,7 @@ import com.sumpaulo.indriver_jetpack.domain.useCases.auth.LoginUseCase
 import com.sumpaulo.indriver_jetpack.domain.useCases.auth.LogoutUseCase
 import com.sumpaulo.indriver_jetpack.domain.useCases.auth.RegisterUseCase
 import com.sumpaulo.indriver_jetpack.domain.useCases.auth.SaveSessionUseCase
+import com.sumpaulo.indriver_jetpack.domain.useCases.auth.UpdateSessionUseCase
 import com.sumpaulo.indriver_jetpack.domain.useCases.user.UserUpdateUseCase
 import com.sumpaulo.indriver_jetpack.domain.useCases.user.UserUseCases
 import dagger.Module
@@ -25,7 +26,8 @@ object UseCaseModule {
         register = RegisterUseCase(authRepository),
         saveSession = SaveSessionUseCase(authRepository),
         getSessionData = GetSessionDataUseCase(authRepository),
-        logout = LogoutUseCase(authRepository)
+        logout = LogoutUseCase(authRepository),
+        updateSession = UpdateSessionUseCase(authRepository)
     )
 
     @Provides

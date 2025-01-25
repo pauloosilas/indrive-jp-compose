@@ -2,36 +2,45 @@ package com.sumpaulo.indriver_jetpack.data.remote.repository
 
 import android.util.Log
 import com.sumpaulo.indriver_jetpack.data.remote.dataSource.remote.service.UserService
+import com.sumpaulo.indriver_jetpack.data.util.HandleRequest
 import com.sumpaulo.indriver_jetpack.domain.model.ErrorResponse
 import com.sumpaulo.indriver_jetpack.domain.model.User
 import com.sumpaulo.indriver_jetpack.domain.repository.UserRepository
 import com.sumpaulo.indriver_jetpack.domain.util.ErrorHelper
 import com.sumpaulo.indriver_jetpack.domain.util.Resource
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+
 import java.io.File
 
+
 class UserRepositoryImpl(private val userService: UserService) : UserRepository {
+
     override suspend fun update(
         id: String,
         user: User,
         file: File?
     ):  Resource<User> {
-        return try{
-            val result = userService.update(id, user)
-            if(result.isSuccessful){
-                Log.d("UserRepositoryImpl", "Data: ${result.body()!!}")
-                Resource.Success(result.body()!!)
-            }else {
 
-                val errorResponse: ErrorResponse? = ErrorHelper.handleError(result.errorBody())
+        if (file != null) {
+            val connection = file.toURI().toURL().openConnection()
+            val mimeType = connection.contentType
+            val contentType = "text/plain"
+            val requestFile = file.asRequestBody(mimeType.toMediaTypeOrNull())
+            val fileFormData = MultipartBody.Part.createFormData("file", file.name, requestFile)
+            val nameData = user.name.toRequestBody(contentType.toMediaTypeOrNull())
+            val lastname = user.lastname.toRequestBody(contentType.toMediaTypeOrNull())
+            val phone = user.phone.toRequestBody(contentType.toMediaTypeOrNull())
 
-                Resource.Failure(errorResponse?.message ?: "Error na requisição...")
-            }
-        }catch(e:Exception){
-            Log.d("UserRepositoryImpl", "Message ${e}")
-            Log.d("UserRepositoryImpl", "Message causa ${e.cause}")
-            e.printStackTrace()
-            Resource.Failure(e.message ?: "Error interno desconhecido...")
+            val result = userService.updateWithImage(fileFormData, id, nameData, lastname, phone)
+            return HandleRequest.send(result)
+
+
+        } else {
+            return HandleRequest.send(userService.update(id, user))
         }
     }
-
 }

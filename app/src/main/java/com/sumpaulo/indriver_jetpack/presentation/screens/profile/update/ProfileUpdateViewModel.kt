@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.sumpaulo.indriver_jetpack.domain.model.User
+import com.sumpaulo.indriver_jetpack.domain.useCases.auth.AuthUseCases
 import com.sumpaulo.indriver_jetpack.domain.useCases.user.UserUseCases
 import com.sumpaulo.indriver_jetpack.domain.util.Resource
 import com.sumpaulo.indriver_jetpack.presentation.screens.profile.update.mapper.toUser
@@ -22,6 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileUpdateViewModel @Inject constructor(
+    private val authUseCases: AuthUseCases,
     private val userUseCases: UserUseCases,
     private val savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context
@@ -36,10 +38,27 @@ class ProfileUpdateViewModel @Inject constructor(
     var updateResponse by mutableStateOf<Resource<User>?>(null)
     private set
 
+    fun submit(){
+        if(file == null)
+            update()
+        else
+            updateWithImage()
+    }
+
     fun update() = viewModelScope.launch {
         updateResponse = Resource.Loading
         val result = userUseCases.update(user.id.toString(), state.toUser(), file = null)
         updateResponse = result
+    }
+
+    fun updateWithImage() = viewModelScope.launch {
+        updateResponse = Resource.Loading
+        val result = userUseCases.update(user.id.toString(), state.toUser(), file )
+        updateResponse = result
+    }
+
+    fun updateUserSession(userResponse: User) = viewModelScope.launch {
+        authUseCases.updateSession(userResponse)
     }
 
     var file: File? = null

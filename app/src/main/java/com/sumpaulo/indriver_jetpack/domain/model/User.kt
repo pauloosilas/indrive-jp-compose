@@ -3,20 +3,22 @@ package com.sumpaulo.indriver_jetpack.domain.model
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 data class User (
     @SerializedName("id")
     val id: Long? = null,
     @SerializedName("name")
-    val name: String,
+    var name: String,
     @SerializedName("lastname")
-    val lastname: String,
+    var lastname: String,
     @SerializedName("email")
     val email: String? = null,
     @SerializedName("phone")
-    val phone: String,
+    var phone: String,
     @SerializedName("image")
-    val image: String? = null,
+    var image: String? = null,
     @SerializedName("notification_token")
     val notificationToken: Any? = null,
     @SerializedName("roles")
@@ -31,7 +33,10 @@ data class User (
             name = name,
             lastname = lastname,
             email = email,
-            phone = phone
+            phone = phone,
+            image = if(!image.isNullOrBlank())
+                          URLEncoder.encode(image, StandardCharsets.UTF_8.toString())
+                  else null
         )
     )
 

@@ -95,7 +95,7 @@ fun ProfileUpdateContent(
                 title = "ATULIZAR PERFIL",
                 icon = Icons.Default.Edit,
                 onClick = {
-                    viewModel.update()
+                    viewModel.submit()
                 }
             )
 
@@ -104,7 +104,7 @@ fun ProfileUpdateContent(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.8f)
+                .fillMaxHeight(0.85f)
                 .padding(horizontal = 20.dp, vertical = 100.dp),
             colors = CardDefaults.cardColors(
                 containerColor = Color.White
@@ -154,7 +154,6 @@ fun ProfileUpdateContent(
                     icon = Icons.Default.Person,
                     onValueChange = {
                         viewModel.onNameInput(it)
-                        Log.d("TESTE", "NOME: ${it}")
                     }
                 )
 

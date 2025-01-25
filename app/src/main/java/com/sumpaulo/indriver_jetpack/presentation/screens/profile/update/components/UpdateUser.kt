@@ -20,6 +20,7 @@ fun UpdateUser(navController: NavHostController, viewModel: ProfileUpdateViewMod
 
         is Resource.Success -> {
             LaunchedEffect(Unit) {
+                viewModel.updateUserSession(response.data)
                 Toast.makeText(context, "Dados Atualizados!", Toast.LENGTH_LONG).show()
             }
 
